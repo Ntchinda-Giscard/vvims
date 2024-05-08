@@ -27,7 +27,7 @@ def upload_files_to_fastapi(front_image_path, back_image_path, url):
 
 # Example usage:
 front_image_path = "IMG_0096.jpg"
-back_image_path = "help.JPG"
+back_image_path = "IMG_0097.jpg"
 url = "http://localhost:8000/idextract/"  # Change this URL to your FastAPI endpoint URL
 
 response = upload_files_to_fastapi(front_image_path, back_image_path, url)

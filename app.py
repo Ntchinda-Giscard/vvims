@@ -43,8 +43,6 @@ async def upload_files(front: UploadFile = File(...), back: UploadFile = File(..
 
         front_text = read_text_img(front_img_path)
         back_text = read_text_img(back_img_path)
-
-        # print(front_text)
         
 
 

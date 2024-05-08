@@ -1,5 +1,5 @@
 from paddleocr import PaddleOCR, draw_ocr
-
+import spacy
 ocr_model = PaddleOCR(lang='en')
 
 
