@@ -1,4 +1,3 @@
-from importlib.resources import read_text
 from fastapi import FastAPI, File, UploadFile, HTTPException
 import os
 
@@ -42,7 +41,7 @@ async def upload_files(front: UploadFile = File(...), back: UploadFile = File(..
         front_img_path = "uploads/front.jpg"
         back_img_path = "uploads/back.jpg"
 
-        front_text = read_text(front_img_path)
+        front_text = read_text_img(front_img_path)
         back_text = read_text_img(back_img_path)
 
         # print(front_text)
