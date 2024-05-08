@@ -1,3 +1,4 @@
+from importlib.resources import read_text
 from fastapi import FastAPI, File, UploadFile, HTTPException
 import os
 
@@ -36,8 +37,11 @@ async def upload_files(front: UploadFile = File(...), back: UploadFile = File(..
         with open(back_path, "wb") as back_file:
             back_file.write(await back.read())
 
-        front_text = "uploads/front.jpg"
-        back_text = "uploads/back.jpg"
+        front_img_path = "uploads/front.jpg"
+        back_img_path = "uploads/back.jpg"
+
+        front_text = read_text(front_img_path)
+
 
         return {"message": "Upload successful", "status_code": 200}
     except Exception as e:
