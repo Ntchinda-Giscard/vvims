@@ -4,7 +4,7 @@ ocr_model = PaddleOCR(lang='en')
 
 
 
-def read_text(img_path:str) -> str:
+def read_text_img(img_path:str) -> str:
     """
         Read text from images
 
@@ -16,7 +16,7 @@ def read_text(img_path:str) -> str:
     """
 
     result = ocr_model.ocr(img_path)
-    
+
     text = ''
     for res in result[0]:
         text += res[1][0] + ' '

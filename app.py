@@ -2,6 +2,8 @@ from importlib.resources import read_text
 from fastapi import FastAPI, File, UploadFile, HTTPException
 import os
 
+from utils import read_text_img
+
 app = FastAPI()
 
 # Directory to save the uploaded images
@@ -41,12 +43,14 @@ async def upload_files(front: UploadFile = File(...), back: UploadFile = File(..
         back_img_path = "uploads/back.jpg"
 
         front_text = read_text(front_img_path)
-        back_text = read_text(back_img_path)
+        back_text = read_text_img(back_img_path)
+
+        # print(front_text)
         
 
 
 
-        return {"message": "Upload successful", "status_code": 200}
+        return {"message": "Upload successful", "status_code": 200, "text": f'{front_text}'}
     except Exception as e:
         return {"message": f"Internal server error: {str(e)}", "status_code": 500}
 
