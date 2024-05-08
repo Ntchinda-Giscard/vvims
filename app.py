@@ -41,6 +41,9 @@ async def upload_files(front: UploadFile = File(...), back: UploadFile = File(..
         back_img_path = "uploads/back.jpg"
 
         front_text = read_text(front_img_path)
+        back_text = read_text(back_img_path)
+        
+
 
 
         return {"message": "Upload successful", "status_code": 200}
