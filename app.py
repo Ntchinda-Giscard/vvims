@@ -1,7 +1,9 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
+from pyparsing import html_comment
+from starlette.responses import HTMLResponse
 import os
 
-from utils import ner_recog, read_text_img
+from utils import licence_dect, ner_recog, read_text_img
 
 app = FastAPI()
 
@@ -11,7 +13,12 @@ UPLOAD_DIR = "uploads"
 # Create the upload directory if it doesn't exist
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-@app.post("/idextract/")
+@app.get("/", response_class=HTMLResponse)
+async def index():
+
+    return HTMLResponse(content=html_comment)
+
+@app.post("/idextract")
 async def upload_files(front: UploadFile = File(...), back: UploadFile = File(...)):
     """
     Endpoint to receive front and back image uploads and save them to disk.
@@ -64,8 +71,9 @@ async def carplate(license: UploadFile = File(...)):
         license_path = os.path.join(UPLOAD_DIR, 'car.jpg')
         with open(license_path, "wb") as license_file:
             license_file.write(await license.read())
+        result =  licence_dect(license_path)
 
-        
+        return{"message" : "Upload successful", "status_code" : 200, "data" : result}
     except Exception as e:
         return {"message": f"Internal server error: {str(e)}", "status_code": 500}
 

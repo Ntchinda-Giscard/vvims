@@ -26,9 +26,30 @@ def upload_files_to_fastapi(front_image_path, back_image_path, url):
     return response.json()
 
 # Example usage:
-front_image_path = "IMG_0096.jpg"
-back_image_path = "IMG_0097.jpg"
-url = "http://localhost:8000/idextract/"  # Change this URL to your FastAPI endpoint URL
+# front_image_path = "IMG_0096.jpg"
+# back_image_path = "IMG_0097.jpg"
+url = "http://localhost:8000/carplate/"  # Change this URL to your FastAPI endpoint URL
 
-response = upload_files_to_fastapi(front_image_path, back_image_path, url)
-print(response)
+import requests
+
+def send_image_to_fastapi(image_path: str, url: str):
+    # Open the image file
+    with open(image_path, 'rb') as file:
+        # Create a dictionary containing the file (with key 'license')
+        files = {'license': file}
+        
+        # Send a POST request to the FastAPI endpoint with the image file
+        response = requests.post(url, files=files)
+        
+        # Check if the request was successful (status code 200)
+        if response.status_code == 200:
+            print("Image successfully sent to FastAPI endpoint", response.json())
+        else:
+            print(f"Failed to send image to FastAPI endpoint. Status code: {response.status_code}")
+
+image_path = 'IMG_0551.JPG'
+
+send_image_to_fastapi(image_path, url)
+
+# response = upload_files_to_fastapi(front_image_path, back_image_path, url)
+# print(response)

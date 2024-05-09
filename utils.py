@@ -73,5 +73,41 @@ def licence_dect(img: str) -> list:
         detections.append((txt, confidence))
     
     return detections
-res = licence_dect("IMG_0551.JPG")
-print(res)
+# res = licence_dect("IMG_0551.JPG")
+# print(res)
+
+html_content = """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Welcome to My App</title>
+        <style>
+            body {
+                background-color: #f0f0f0;
+                font-family: Arial, sans-serif;
+            }
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                text-align: center;
+            }
+            .footer {
+                margin-top: 50px;
+                font-size: 14px;
+                color: #666;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Welcome to My Inspirational App! 😊</h1>
+            <p>You have the power to change the world! Believe in yourself and never give up on your dreams.</p>
+            <p>Let this app be the beginning of your journey towards greatness!</p>
+        </div>
+        <div class="footer">
+            <p>Made with ❤️ by Ntchinda Giscard</p>
+        </div>
+    </body>
+    </html>
+    """
