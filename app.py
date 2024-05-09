@@ -1,7 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 import os
 
-from utils import read_text_img
+from utils import ner_recog, read_text_img
 
 app = FastAPI()
 
@@ -44,12 +44,22 @@ async def upload_files(front: UploadFile = File(...), back: UploadFile = File(..
         front_text = read_text_img(front_img_path)
         back_text = read_text_img(back_img_path)
         
+        ent_front = ner_recog(front_text)
+        ent_back = ner_recog(back_text)
+        
 
 
 
-        return {"message": "Upload successful", "status_code": 200, "text": f'{front_text}'}
+        return {"message": "Upload successful", "status_code": 200, "text_front": f'{front_text}', 'entity_front': ent_front, 'text_back': f'{back_text}', 'entity_back': ent_back}
     except Exception as e:
         return {"message": f"Internal server error: {str(e)}", "status_code": 500}
+
+@app.post("/carplate")
+async def carplate(license: UploadFile = File(...)):
+
+    pass
+
+
 
 if __name__ == "__main__":
     import uvicorn

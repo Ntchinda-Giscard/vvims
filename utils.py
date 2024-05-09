@@ -1,6 +1,30 @@
 from paddleocr import PaddleOCR, draw_ocr
 import spacy
+
 ocr_model = PaddleOCR(lang='en')
+nlp_ner = spacy.load("output/model-best")
+
+
+def ner_recog(text:str) -> dict:
+    """
+    Extract entities from text using SpaCy and return them as JSON.
+
+    Args:
+    - text: The input text.
+
+    Returns:
+    - dict: A dictionary containing the extracted entities in JSON format.
+    """
+    # Load SpaCy model
+    # Process the text
+    doc = nlp_ner(text)
+
+    # Extract entities and format them as JSON
+    entities = [{"text": ent.text, "label": ent.label_} for ent in doc.ents]
+
+    return {"entities": entities}
+
+
 
 
 
