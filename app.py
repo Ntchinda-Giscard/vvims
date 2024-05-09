@@ -56,8 +56,17 @@ async def upload_files(front: UploadFile = File(...), back: UploadFile = File(..
 
 @app.post("/carplate")
 async def carplate(license: UploadFile = File(...)):
+    try:
+        if not license:
+            raise HTTPException(status_code=400, detail="Both front and back images are required.")
+         # Save the back image to disk
+        license_path = os.path.join(UPLOAD_DIR, 'car.jpg')
+        with open(license_path, "wb") as license_file:
+            license_file.write(await license.read())
 
-    pass
+        
+    except Exception as e:
+        return {"message": f"Internal server error: {str(e)}", "status_code": 500}
 
 
 
