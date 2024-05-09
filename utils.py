@@ -1,3 +1,4 @@
+import os
 from paddleocr import PaddleOCR, draw_ocr
 import spacy
 from ultralytics import YOLO
@@ -46,14 +47,15 @@ def read_text_img(img_path:str) -> str:
     """
 
     result = ocr_model.ocr(img_path)
-
+    print(result)
     text = ''
-    for res in result[0]:
-        text += res[1][0] + ' '
+    if result[0]:
+        for res in result[0]:
+            text += res[1][0] + ' '
     return text
 
 
-def licence_dect(img: str, des='car_plate.jpg') -> list:
+def licence_dect(img: str) -> list:
     image = Image.open(img)
     results = detector(img)
     detections = []
@@ -64,8 +66,12 @@ def licence_dect(img: str, des='car_plate.jpg') -> list:
         confidence = float(confidence)
         cropped_image = image.crop((x1, y1, x2, y2))
 
-        txt = read_text_img(cropped_image)
+        cropped_image.save(os.path.join('license', 'carplate.jpg'))
+
+        txt = read_text_img('license/carplate.jpg')
 
         detections.append((txt, confidence))
     
     return detections
+res = licence_dect("IMG_0551.JPG")
+print(res)

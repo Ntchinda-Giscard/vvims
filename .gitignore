@@ -5,3 +5,4 @@ venv/
 *.JPG
 *.png
 output/
+license/

@@ -56,9 +56,10 @@ async def upload_files(front: UploadFile = File(...), back: UploadFile = File(..
 
 @app.post("/carplate")
 async def carplate(license: UploadFile = File(...)):
+    img_path = 'uploads/car.jpg'
     try:
         if not license:
-            raise HTTPException(status_code=400, detail="Both front and back images are required.")
+            raise HTTPException(status_code=400, detail="License plate image is required.")
          # Save the back image to disk
         license_path = os.path.join(UPLOAD_DIR, 'car.jpg')
         with open(license_path, "wb") as license_file:
