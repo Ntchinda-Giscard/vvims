@@ -6,3 +6,4 @@ venv/
 *.png
 output/
 license/
+test.py

@@ -48,7 +48,7 @@ async def read_items():
             }
             .footer {
                 margin-top: 50px;
-                font-size: 14px;
+                font-size: 10px;
                 color: #666;
             }
         </style>
