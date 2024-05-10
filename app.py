@@ -106,7 +106,7 @@ async def upload_files(front: UploadFile = File(...), back: UploadFile = File(..
 
 
 
-        return {"message": "Upload successful", "status_code": 200, "text_front": f'{front_text}', 'entity_front': ent_front, 'text_back': f'{back_text}', 'entity_back': ent_back}
+        return {"message": "Upload successful", "status_code": 200, "data":{"text_front": f'{front_text}', 'entity_front': ent_front, 'text_back': f'{back_text}', 'entity_back': ent_back}}
     except Exception as e:
         return {"message": f"Internal server error: {str(e)}", "status_code": 500}
 
