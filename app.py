@@ -1,10 +1,18 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import HTMLResponse
 import os
-
+from fastapi.middleware.cors import CORSMiddleware
 from utils import licence_dect, ner_recog, read_text_img
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 # Directory to save the uploaded images
 UPLOAD_DIR = "uploads"
@@ -18,7 +26,9 @@ async def read_items():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Welcome to My App</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>API Documentation</title>
         <style>
         .text {
             font-family: Arial, sans-serif;
@@ -36,29 +46,110 @@ async def read_items():
             padding: 25px;
             }
 
-            body {
-                background-color: #f0f0f0;
-                font-family: Arial, sans-serif;
-            }
+
             .container {
                 max-width: 800px;
                 margin: 0 auto;
                 padding: 20px;
                 text-align: center;
             }
-            .footer {
-                margin-top: 50px;
-                font-size: 10px;
-                color: #666;
-            }
+            body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        main {
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 20px;
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
         </style>
     </head>
+    <header>
+        <h1>API Documentation</h1>
+    </header>
     <body>
         <div class="container">
             <h1>Welcome to VVIMS AI App! 😊</h1>
             <p class="text"> Explore the wonders of our OCR and ANPR APIs! These powerful tools utilize AI to effortlessly decipher and recognize elements within Cameroonian ID cards, extracting valuable information with just a simple call to the <code> "/idextract" </code> endpoint. With our technology, you'll gain the ability to see beyond the surface and effortlessly identify vehicle license plates using the <code>"/carplate"</code> endpoint. The power is now yours to wield. Unleash the full potential of these tools and revolutionize your workflow..</p>
             <p>Let this app be the beginning of your journey towards greatness!</p>
         </div>
+        <main>
+        <h2>/idextract Endpoint</h2>
+        <p>The <code>/idextract</code> endpoint extracts information from ID cards.</p>
+        
+        <h2>Request Body</h2>
+        <p>The request body should contain the following:</p>
+        <ul>
+            <li>Front file: Binary file containing the front of the ID card.</li>
+            <li>Back file: Binary file containing the back of the ID card.</li>
+        </ul>
+
+        <h2>Response</h2>
+        <p>The endpoint returns a data object with the following attributes:</p>
+        <ul>
+            <li><code>text_front</code>: Text extracted from the front of the ID card.</li>
+            <li><code>text_back</code>: Text extracted from the back of the ID card.</li>
+            <li><code>entity_front</code>: Entities extracted from the front of the ID card.</li>
+            <li><code>entity_back</code>: Entities extracted from the back of the ID card.</li>
+        </ul>
+
+        <h2>/license Endpoint</h2>
+        <p>The <code>/license</code> endpoint extracts text from a license image.</p>
+        
+        <h2>Request Body</h2>
+        <p>The request body should contain the following:</p>
+        <ul>
+            <li>Image file: Upload file containing the license image.</li>
+        </ul>
+
+        <h2>Response</h2>
+        <p>The endpoint returns a list of tuples containing the extracted text and model confidence.</p>
+        <table>
+            <tr>
+                <th>Extracted Text</th>
+                <th>Confidence</th>
+            </tr>
+            <tr>
+                <td>Text 1</td>
+                <td>Confidence 1</td>
+            </tr>
+            <tr>
+                <td>Text 2</td>
+                <td>Confidence 2</td>
+            </tr>
+            <!-- Add more rows as needed -->
+        </table>
+    </main>
         <div class="footer">
             <p>Made with ❤️ by Ntchinda Giscard</p>
         </div>
