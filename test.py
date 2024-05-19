@@ -28,7 +28,7 @@ def upload_files_to_fastapi(front_image_path, back_image_path, url):
 # Example usage:
 # front_image_path = "IMG_0096.jpg"
 # back_image_path = "IMG_0097.jpg"
-url = "https://ad15-129-0-76-205.ngrok-free.app/carplate"  # Change this URL to your FastAPI endpoint URL
+url = "https://5ec4-129-0-76-45.ngrok-free.app/carplate"  # Change this URL to your FastAPI endpoint URL
 # response = upload_files_to_fastapi(front_image_path, back_image_path, url)
 # print(response)
 
@@ -49,7 +49,7 @@ def send_image_to_fastapi(image_path: str, url: str):
         else:
             print(f"Failed to send image to FastAPI endpoint. Status code: {response.status_code}")
 
-image_path = 'IMG_0551.JPG'
+image_path = 'carplate.jpg'
 
 send_image_to_fastapi(image_path, url)
 
