@@ -1,10 +1,8 @@
 import os
-from paddleocr import PaddleOCR, draw_ocr
+from paddleocr import PaddleOCR
 import spacy
 from ultralytics import YOLO
-import matplotlib.pyplot as plt
 from PIL import Image
-import numpy as np
 
 ocr_model = PaddleOCR(lang='en')
 nlp_ner = spacy.load("output/model-best")
