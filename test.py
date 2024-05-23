@@ -23,14 +23,14 @@ def upload_files_to_fastapi(front_image_path, back_image_path, url):
             # Upload the files to the FastAPI app
             response = requests.post(url, files={**front_data, **back_data})
 
-    return response.json()
+    return response.json()['data']['entity_front']
 
 # Example usage:
-# front_image_path = "IMG_0096.jpg"
-# back_image_path = "IMG_0097.jpg"
-url = "https://5ec4-129-0-76-45.ngrok-free.app/carplate"  # Change this URL to your FastAPI endpoint URL
-# response = upload_files_to_fastapi(front_image_path, back_image_path, url)
-# print(response)
+front_image_path = "IMG_0096.jpg"
+back_image_path = "IMG_0097.jpg"
+url = "https://a13a-129-0-226-192.ngrok-free.app/idextract"  # Change this URL to your FastAPI endpoint URL
+response = upload_files_to_fastapi(front_image_path, back_image_path, url)
+print(response)
 
 import requests
 
@@ -51,5 +51,5 @@ def send_image_to_fastapi(image_path: str, url: str):
 
 image_path = 'carplate.jpg'
 
-send_image_to_fastapi(image_path, url)
+# send_image_to_fastapi(image_path, url)
 

@@ -27,7 +27,7 @@ def ner_recog(text:str) -> dict:
     doc = nlp_ner(text)
 
     # Extract entities and format them as JSON
-    entities = [{"text": ent.text, "label": ent.label_} for ent in doc.ents]
+    entities = [{ent.label_ : ent.text} for ent in doc.ents]
 
     return {"entities": entities}
 
