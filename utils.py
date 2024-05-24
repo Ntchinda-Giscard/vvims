@@ -8,12 +8,15 @@ import os
 import time
 from botocore.exceptions import NoCredentialsError
 from dotenv import load_dotenv
+from colorthief import ColorThief
+
 
 load_dotenv()
 
 ocr_model = PaddleOCR(lang='en')
 nlp_ner = spacy.load("output/model-best")
 detector = YOLO('best.pt')
+vehicle = YOLO('yolov8x.pt')
 
 aws_access_key_id=os.getenv('AWS_ACESS_KEY')
 aws_secret_access_key = os.getenv('AWS_SECRET_KEY')
@@ -79,9 +82,6 @@ def ner_recog(text:str) -> dict:
     return {"entities": entities}
 
 
-
-
-
 def read_text_img(img_path:str) -> str:
     """
         Read text from images
@@ -94,13 +94,32 @@ def read_text_img(img_path:str) -> str:
     """
 
     result = ocr_model.ocr(img_path)
-    print(result)
     text = ''
     if result[0]:
         for res in result[0]:
             text += res[1][0] + ' '
     return text
 
+
+def vehicle_dect(img: str) -> any:
+    image = Image.open(img)
+
+    results = vehicle.predict(source=img, cls=['car', 'bus', 'truck', 'motorcycle'], conf=0.7)
+    colors = []
+    for result in results[0]:
+        res = result.numpy()
+        x1, y1, x2, y2, confidence, _ = res
+
+        confidence = float(confidence)
+        cropped_image = image.crop((x1, y1, x2, y2))
+        img_path = os.path.join('license', 'carplate.jpg')
+        cropped_image.save(img_path)
+        color_thief = ColorThief(img_path)
+        dominant_color = color_thief.get_color(quality=1)
+        colors.append(dominant_color)
+
+
+    return colors[0]
 
 def licence_dect(img: str) -> list:
     image = Image.open(img)
@@ -119,7 +138,9 @@ def licence_dect(img: str) -> list:
 
         detections.append((txt, confidence))
     
-    return detections
-# res = licence_dect("IMG_0551.JPG")
-# print(res)
+    return results
+
+
+res = vehicle_dect("carplate.jpg")
+print(res)
 

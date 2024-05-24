@@ -8,3 +8,4 @@ output/
 license/
 test.py
 *.webp
+*.pt

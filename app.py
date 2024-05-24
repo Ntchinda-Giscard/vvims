@@ -2,7 +2,7 @@ from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import HTMLResponse
 import os
 from fastapi.middleware.cors import CORSMiddleware
-from utils import licence_dect, ner_recog, read_text_img
+from utils import licence_dect, ner_recog, read_text_img, upload_to_s3
 
 app = FastAPI()
 
@@ -188,6 +188,9 @@ async def upload_files(front: UploadFile = File(...), back: UploadFile = File(..
         front_img_path = "uploads/front.jpg"
         back_img_path = "uploads/back.jpg"
 
+        front_url = upload_to_s3(front_img_path)
+        back_url = upload_to_s3(back_img_path)
+
         front_text = read_text_img(front_img_path)
         back_text = read_text_img(back_img_path)
         
@@ -197,7 +200,7 @@ async def upload_files(front: UploadFile = File(...), back: UploadFile = File(..
 
 
 
-        return {"message": "Upload successful", "status_code": 200, "data":{"text_front": f'{front_text}', 'entity_front': ent_front, 'text_back': f'{back_text}', 'entity_back': ent_back}}
+        return {"message": "Upload successful", "status_code": 200, "data":{"text_front": f'{front_text}', 'front_url': front_url , 'entity_front': ent_front, 'text_back': f'{back_text}', 'back_url': back_url,  'entity_back': ent_back}}
     except Exception as e:
         return {"message": f"Internal server error: {str(e)}", "status_code": 500}
 
