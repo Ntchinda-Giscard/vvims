@@ -1,5 +1,5 @@
 # Use the official Python base image
-FROM python:3.9-slim
+FROM python:3.10.14-alpine3.19
 
 # Set the working directory
 WORKDIR /app
@@ -8,12 +8,12 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install the dependencies
-RUN apt-get update \
-&& apt-get install -y --no-install-recommends --no-install-suggests \
-&& pip3 install --no-cache-dir --upgrade pip
+# RUN apt-get update \
+# && apt-get install -y --no-install-recommends --no-install-suggests \
+# && pip install --no-cache-dir --upgrade pip
 
-RUN pip3 install --default-timeout=200 future 
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip install --default-timeout=200 future 
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the FastAPI app into the container
 COPY . .
