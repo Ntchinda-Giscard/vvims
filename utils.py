@@ -7,15 +7,25 @@ import boto3
 import os
 import time
 from botocore.exceptions import NoCredentialsError
+from dotenv import load_dotenv
 
+load_dotenv()
 
 ocr_model = PaddleOCR(lang='en')
 nlp_ner = spacy.load("output/model-best")
 detector = YOLO('best.pt')
 
+aws_access_key_id=os.getenv('AWS_ACESS_KEY')
+aws_secret_access_key = os.getenv('AWS_SECRET_KEY')
+bucket_name='vvims'
 
 # Function to upload a file to S3
-def upload_to_s3(file_path, bucket_name, aws_access_key_id, aws_secret_access_key, region_name='us-west-2'):
+def upload_to_s3(
+        file_path, 
+        bucket_name=bucket_name, 
+        aws_access_key_id=aws_access_key_id, 
+        aws_secret_access_key=aws_secret_access_key,
+        region_name='eu-north-1'):
     # Create an S3 client
     s3 = boto3.client('s3', 
                       aws_access_key_id=aws_access_key_id,
