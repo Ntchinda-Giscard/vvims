@@ -3,11 +3,50 @@ from paddleocr import PaddleOCR
 import spacy
 from ultralytics import YOLO
 from PIL import Image
+import boto3
+import os
+import time
+from botocore.exceptions import NoCredentialsError
+
 
 ocr_model = PaddleOCR(lang='en')
 nlp_ner = spacy.load("output/model-best")
 detector = YOLO('best.pt')
 
+
+# Function to upload a file to S3
+def upload_to_s3(file_path, bucket_name, aws_access_key_id, aws_secret_access_key, region_name='us-west-2'):
+    # Create an S3 client
+    s3 = boto3.client('s3', 
+                      aws_access_key_id=aws_access_key_id,
+                      aws_secret_access_key=aws_secret_access_key,
+                      region_name=region_name)
+    
+    # Get the current timestamp
+    timestamp = int(time.time())
+    
+    # Extract the file name from the file path
+    file_name = file_path.split("/")[-1]
+    
+    # Concatenate the timestamp with the file name
+    unique_file_name = f"{timestamp}_{file_name}"
+    
+    try:
+        # Upload the file
+        s3.upload_file(file_path, bucket_name, unique_file_name)
+        
+        # Construct the file URL
+        file_url = f"https://{bucket_name}.s3.{region_name}.amazonaws.com/{unique_file_name}"
+        
+        return file_url
+    
+    except FileNotFoundError:
+        print("The file was not found")
+        return None
+    
+    except NoCredentialsError:
+        print("Credentials not available")
+        return None
 
 
 def ner_recog(text:str) -> dict:
