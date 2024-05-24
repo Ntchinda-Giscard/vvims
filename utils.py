@@ -104,41 +104,49 @@ def read_text_img(img_path:str) -> str:
 def vehicle_dect(img: str) -> any:
     image = Image.open(img)
 
-    results = vehicle.predict(source=img, cls=['car', 'bus', 'truck', 'motorcycle'], conf=0.7)
+    results = vehicle(source=img, cls=['car', 'bus', 'truck', 'motorcycle'], conf=0.7)
+    names = vehicle.names
+    classes=[]
     colors = []
-    for result in results[0]:
-        res = result.numpy()
-        x1, y1, x2, y2, confidence, _ = res
+    final = []
+    for result in results:
+        boxes = result.boxes.xyxy
+        print("Classes",result.boxes.cls)
+        for c in result.boxes.cls.numpy():
+            classes.append(names[int(c)])
+        for box in boxes.numpy():
+            x1, y1, x2, y2 = box[0], box[1], box[2], box[3]
+            cropped_image = image.crop((x1, y1, x2, y2))
+            img_path = os.path.join('license', 'carplate.jpg')
+            cropped_image.save(img_path)
+            color_thief = ColorThief(img_path)
+            dominant_color = color_thief.get_color(quality=1)
+            colors.append(dominant_color)
+    for i in range(len(classes)):
+        final.append((classes[i], colors[i]))
 
-        confidence = float(confidence)
-        cropped_image = image.crop((x1, y1, x2, y2))
-        img_path = os.path.join('license', 'carplate.jpg')
-        cropped_image.save(img_path)
-        color_thief = ColorThief(img_path)
-        dominant_color = color_thief.get_color(quality=1)
-        colors.append(dominant_color)
-
-
-    return colors[0]
+    return final
 
 def licence_dect(img: str) -> list:
     image = Image.open(img)
     results = detector(img)
+    names = detector.names
+
     detections = []
-    for result in results[0]:
-        res = result.numpy()
-        x1, y1, x2, y2, confidence, _ = res
+    for result in results:
+        boxes = result.boxes.xyxy
+        for box in boxes.numpy():
+            x1, y1, x2, y2 = box[0], box[1], box[2], box[3]
+        # confidence = float(confidence)
+            cropped_image = image.crop((x1, y1, x2, y2))
 
-        confidence = float(confidence)
-        cropped_image = image.crop((x1, y1, x2, y2))
+            cropped_image.save(os.path.join('license', 'carplate.jpg'))
 
-        cropped_image.save(os.path.join('license', 'carplate.jpg'))
+            txt = read_text_img('license/carplate.jpg')
 
-        txt = read_text_img('license/carplate.jpg')
-
-        detections.append((txt, confidence))
+            detections.append((txt))
     
-    return results
+    return detections
 
 
 res = vehicle_dect("carplate.jpg")
