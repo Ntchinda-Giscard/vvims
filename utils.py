@@ -26,8 +26,8 @@ bucket_name='vvims'
 def upload_to_s3(
         file_path, 
         bucket_name=bucket_name, 
-        aws_access_key_id=aws_access_key_id, 
-        aws_secret_access_key=aws_secret_access_key,
+        aws_access_key_id="AKIAR2BMOVON2BDXHLBI", 
+        aws_secret_access_key="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",
         region_name='eu-north-1'):
     # Create an S3 client
     s3 = boto3.client('s3', 
