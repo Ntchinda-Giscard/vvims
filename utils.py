@@ -103,6 +103,9 @@ def licence_dect(img: str) -> list:
     image = Image.open(img)
     results = detector(img)
     names = detector.names
+    color_thief = ColorThief(img)
+    dominant_color = color_thief.get_color(quality=1)
+
 
     detections = []
     for result in results:
@@ -116,7 +119,7 @@ def licence_dect(img: str) -> list:
 
             txt = read_text_img('license/carplate.jpg')
 
-            detections.append((txt))
+            detections.append((txt, dominant_color))
     
     return detections
 
