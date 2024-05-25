@@ -12,7 +12,7 @@ RUN python -m pip install paddlepaddle -i https://mirror.baidu.com/pypi/simple
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Make port 80 available to the world outside this container
-EXPOSE 8000
+EXPOSE 7860
 
 # Run the FastAPI app with uvicorn
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "7860"]
