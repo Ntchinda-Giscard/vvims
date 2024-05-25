@@ -119,7 +119,7 @@ def licence_dect(img: str) -> list:
 
             txt = read_text_img('license/carplate.jpg')
 
-            detections.append((txt, dominant_color))
+            detections.append({"matricule":txt, "color" :dominant_color})
     
     return detections
 
@@ -148,7 +148,7 @@ def vehicle_dect(img: str) -> any:
             dominant_color = color_thief.get_color(quality=1)
             colors.append((dominant_color, num_plate))
     for i in range(len(classes)):
-        final.append((classes[i], colors[i]))
+        final.append({ "type": classes[i], "color" : colors[i]})
 
     return final
 
