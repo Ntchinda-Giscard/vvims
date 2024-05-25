@@ -144,7 +144,7 @@ torch==2.2.2
 torchvision==0.17.2
 tqdm==4.66.4
 traitlets==5.14.3
-typer>=0.3.0
+typer~=0.*
 typing_extensions==4.11.0
 tzdata==2024.1
 ujson==5.9.0
