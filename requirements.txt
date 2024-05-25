@@ -33,7 +33,6 @@ et-xmlfile==1.1.0
 exceptiongroup==1.2.1
 executing==2.0.1
 fastapi==0.111.0
-fastapi-cli==0.0.3
 filelock==3.14.0
 fire==0.6.0
 Flask==3.0.3
@@ -144,7 +143,7 @@ torch==2.2.2
 torchvision==0.17.2
 tqdm==4.66.4
 traitlets==5.14.3
-typer~=0.*
+typer
 typing_extensions==4.11.0
 tzdata==2024.1
 ujson==5.9.0
