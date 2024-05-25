@@ -4,7 +4,6 @@ import spacy
 from ultralytics import YOLO
 from PIL import Image
 import boto3
-import os
 import time
 from botocore.exceptions import NoCredentialsError
 from dotenv import load_dotenv
