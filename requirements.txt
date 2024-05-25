@@ -3,3 +3,5 @@ spacy
 boto3
 python-dotenv
 paddleocr
+fastapi
+uvicorn

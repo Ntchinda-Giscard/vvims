@@ -12,7 +12,6 @@ COPY requirements.txt .
 # && apt-get install -y --no-install-recommends --no-install-suggests \
 # && pip install --no-cache-dir --upgrade pip
 
-RUN pip install --default-timeout=200 future 
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the FastAPI app into the container
