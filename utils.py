@@ -151,6 +151,6 @@ def vehicle_dect(img: str) -> any:
 
 
 
-# res = vehicle_dect("carplate.jpg")
-# print(res)
+res = licence_dect("cars.jpg")
+print(res)
 
