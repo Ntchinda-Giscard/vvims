@@ -43,7 +43,7 @@ jobs:
     - name: build and push docker image to registry
       uses: docker/build-push-action@v5
       with:
-        context: .3, 64
+        context: .
         push: true
         tags: ntchindagiscard/vvims-server:latest
     
