@@ -2,7 +2,7 @@ from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import HTMLResponse
 import os
 from fastapi.middleware.cors import CORSMiddleware
-from utils import licence_dect, ner_recog, read_text_img, upload_to_s3
+from utils import ner_recog, read_text_img, upload_to_s3, vehicle_dect
 
 app = FastAPI()
 
@@ -214,7 +214,7 @@ async def carplate(license: UploadFile = File(...)):
         license_path = os.path.join(UPLOAD_DIR, 'car.jpg')
         with open(license_path, "wb") as license_file:
             license_file.write(await license.read())
-        result =  licence_dect(license_path)
+        result =  vehicle_dect(license_path)
 
         return{"message" : "Upload successful", "status_code" : 200, "data" : result}
     except Exception as e:
