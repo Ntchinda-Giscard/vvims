@@ -9,4 +9,4 @@ license/
 test.py
 *.webp
 *.pt
-*.env
+.env
