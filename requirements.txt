@@ -3,3 +3,4 @@ paddleocr
 boto3
 spacy
 fastapi
+uvicorn
