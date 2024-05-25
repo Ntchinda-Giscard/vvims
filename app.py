@@ -187,9 +187,10 @@ async def upload_files(front: UploadFile = File(...), back: UploadFile = File(..
 
         front_img_path = "uploads/front.jpg"
         back_img_path = "uploads/back.jpg"
-
-        front_url = upload_to_s3(front_img_path)
-        back_url = upload_to_s3(back_img_path)
+        front_url=''
+        back_url=''
+        # front_url = upload_to_s3(front_img_path)
+        # back_url = upload_to_s3(back_img_path)
 
         front_text = read_text_img(front_img_path)
         back_text = read_text_img(back_img_path)
