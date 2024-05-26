@@ -15,7 +15,7 @@ load_dotenv()
 ocr_model = PaddleOCR(lang='en')
 nlp_ner = spacy.load("output/model-best")
 detector = YOLO('best.pt')
-vehicle = YOLO('yolov8x.pt')
+vehicle = YOLO('yolov8m.pt')
 
 aws_access_key_id=os.getenv('AWS_ACESS_KEY')
 aws_secret_access_key = os.getenv('AWS_SECRET_KEY')
@@ -146,7 +146,7 @@ def vehicle_dect(img: str) -> any:
             num_plate = licence_dect(img_path)
             color_thief = ColorThief(img_path)
             dominant_color = color_thief.get_color(quality=1)
-            colors.append({"color": dominant_color, "plate": num_plate})
+            colors = {"color": dominant_color, "plate": num_plate}
     for i in range(len(classes)):
         final.append({ "type": classes[i], "car_data" : colors[i]})
 
