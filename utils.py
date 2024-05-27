@@ -15,7 +15,7 @@ load_dotenv()
 ocr_model = PaddleOCR(lang='en')
 nlp_ner = spacy.load("output/model-best")
 detector = YOLO('best.pt')
-vehicle = YOLO('yolov8m.pt')
+vehicle = YOLO('yolov8x.pt')
 
 aws_access_key_id=os.getenv('AWS_ACESS_KEY')
 aws_secret_access_key = os.getenv('AWS_SECRET_KEY')
@@ -108,20 +108,23 @@ def licence_dect(img: str) -> list:
 
 
     detections = []
-    for result in results:
-        boxes = result.boxes.xyxy
-        for box in boxes.numpy():
-            x1, y1, x2, y2 = box[0], box[1], box[2], box[3]
-        # confidence = float(confidence)
-            cropped_image = image.crop((x1, y1, x2, y2))
+    try:
+        for result in results:
+            boxes = result.boxes.xyxy
+            for box in boxes.numpy():
+                x1, y1, x2, y2 = box[0], box[1], box[2], box[3]
+            # confidence = float(confidence)
+                cropped_image = image.crop((x1, y1, x2, y2))
 
-            cropped_image.save(os.path.join('license', 'carplate.jpg'))
+                cropped_image.save(os.path.join('license', 'carplate.jpg'))
 
-            txt = read_text_img('license/carplate.jpg')
+                txt = read_text_img('license/carplate.jpg')
 
-            detections.append(txt)
-    
-    return detections
+                detections.append(txt)
+        
+        return detections
+    except Exception as e:
+        pass
 
 
 def vehicle_dect(img: str) -> any:
@@ -132,25 +135,35 @@ def vehicle_dect(img: str) -> any:
     classes=[]
     colors = []
     final = []
-    for result in results:
-        boxes = result.boxes.xyxy
-        print("Classes",result.boxes.cls)
-        for c in result.boxes.cls.numpy():
-            classes.append(names[int(c)])
-        for box in boxes.numpy():
-            x1, y1, x2, y2 = box[0], box[1], box[2], box[3]
-            cropped_image = image.crop((x1, y1, x2, y2))
-            img_path = os.path.join('license', 'cars.jpg')
-            cropped_image.save(img_path)
+    try:
+        for result in results:
+            boxes = result.boxes.xyxy
+            print("Classes",result.boxes.cls)
+            for c in result.boxes.cls.numpy():
+                classes.append(names[int(c)])
+            for box in boxes.numpy():
+                x1, y1, x2, y2 = box[0], box[1], box[2], box[3]
+                cropped_image = image.crop((x1, y1, x2, y2))
+                img_path = os.path.join('license', 'cars.jpg')
+                cropped_image.save(img_path)
 
-            num_plate = licence_dect(img_path)
-            color_thief = ColorThief(img_path)
-            dominant_color = color_thief.get_color(quality=1)
-            colors = {"color": dominant_color, "plate": num_plate}
-    for i in range(len(classes)):
-        final.append({ "type": classes[i], "car_data" : colors[i]})
+                num_plate = licence_dect(img_path)
+                color_thief = ColorThief(img_path)
+                dominant_color = color_thief.get_color(quality=1)
+                colors = {"color": dominant_color, "plate": num_plate}
+                print(colors)
+                print(classes)
 
-    return final
+        for i in range(len(classes)):
+            final.append({ "type": classes[i], "car_data" : colors[i]})
+        return final
+    
+    except Exception as e:
+        raise(e)
+        pass
+    # for i in range(len(classes)):
+    #     final.append({ "type": classes[i], "car_data" : colors[i]})
+
 
 
 
