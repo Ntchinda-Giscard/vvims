@@ -213,13 +213,13 @@ async def carplate(license: UploadFile = File(...)):
             raise HTTPException(status_code=400, detail="License plate image is required.")
          # Save the back image to disk
         license_path = os.path.join(UPLOAD_DIR, 'car.jpg')
-        print(license_path)
         with open(license_path, "wb") as license_file:
             license_file.write(await license.read())
         result =  vehicle_dect(license_path)
 
         if len(result) <=0:
             result = licence_dect(license_path)
+            result = { "type": '', "car_data" : [{"color": '', "plate" : result[0]}]}
 
         return{"message" : "Upload successful", "status_code" : 200, "data" : result}
     except Exception as e:
@@ -229,4 +229,4 @@ async def carplate(license: UploadFile = File(...)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=7860)
